@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ares.dao.core.dal.mapper.ext.Ares2ConfGroupExtMapper">
+
+  <delete id="deleteConfGroup" parameterType="com.cy.ares.dao.common.model.Ares2ConfGroupDO">
+
+    delete  from ares2_conf_group
+    where namespace_code = #{namespaceCode} and app_code = #{appCode} and env_code = #{envCode}
+    and cluster_code = #{clusterCode} and `group` = #{group} ;
+
+    delete  from ares2_conf
+    where namespace_code = #{namespaceCode} and app_code = #{appCode} and env_code = #{envCode}
+    and cluster_code = #{clusterCode} and `group` = #{group} ;
+
+    delete  from ares2_conf_history
+    where namespace_code = #{namespaceCode} and app_code = #{appCode} and env_code = #{envCode}
+    and cluster_code = #{clusterCode} and `group` = #{group} ;
+
+  </delete>
+
+</mapper>

@@ -1,0 +1,117 @@
+############################################################
+### Java ###
+*.class
+classes/
+# Mobile Tools for Java (J2ME)
+.mtj
+.tmp/
+
+### Package Files ###
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+############################################################
+### Eclipse IDE file###############################
+.settings/
+.metadata
+.project
+.classpath
+.loadpath
+# Locally stored "Eclipse launch configurations"
+*.launch
+local.properties
+### Itellij Idea File  ###############################
+*.ipr
+*.iml
+*.iws
+.idea
+.idea/
+
+############################################################
+### Compile file ###
+bin/
+tmp/
+*.tmp
+*.bak
+
+############################################################
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+.gradle
+
+# python compile result
+*.pyc
+
+# bdb 
+.jdb
+.csv
+.info.0
+.lck
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin 
+.target
+
+############################################################
+*.log
+log.txt
+
+############################################################
+### OSX ###########################
+.DS_Store
+.AppleDouble
+.LSOverride
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+# Network Trash Folder
+Temporary Items
+.apdisk
+### Linux ###########################
+*~
+*.swp
+*~.nib
+### Windows ###########################
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+# Folder config file
+Desktop.ini
+# Windows shortcuts
+*.lnk
+# Thumbnails
+._*
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+############################################################
+# KDE directory preferences
+.directory
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+############################################################
+# cmc
+backup.properties
+
+.flattened-pom.xml

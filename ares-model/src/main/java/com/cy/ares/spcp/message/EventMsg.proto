@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option java_package = "com.cy.ares.spcp.message";
+
+message Event {
+  string eventId = 1;
+  string name = 2;
+  string header = 3;
+  string data = 4;
+}

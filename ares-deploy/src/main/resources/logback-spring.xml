@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<!-- Spring boot 默认的日志格式 -->
+	<!--<include resource="org/springframework/boot/logging/logback/base.xml"/>-->
+	<!--<logger name="org.springframework.web" level="DEBUG"/>-->
+
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+	<springProperty scope="context" name="LOG_HOME" source="log_path" defaultValue="/cy/logs/ares2.2"/>
+	
+	<!-- 彩色日志 -->
+	<!-- 彩色日志依赖的渲染类 -->
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+	<conversionRule conversionWord="wex"
+	                converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+	<conversionRule conversionWord="wEx"
+	                converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+	<!-- 彩色日志格式 -->
+	<property name="CONSOLE_LOG_PATTERN"
+	          value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+	<property name="SERVICE_STD_LOG" value="std"/>
+	<property name="SERVICE_STD_FULL_PATH" value="${LOG_HOME}/${SERVICE_STD_LOG}.log"/>
+
+	<property name="ARES_INFO_LOG_NAME" value="ares"/>
+	<property name="ARES_INFO_LOG_FULL_PATH" value="${LOG_HOME}/${ARES_INFO_LOG_NAME}.log"/>
+	
+	<property name="ARES_SERVER_LOG_NAME" value="server"/>
+	<property name="ARES_SERVER_LOG_FULL_PATH" value="${LOG_HOME}/${ARES_SERVER_LOG_NAME}.log"/>
+
+	<property name="ARES_ERROR_LOG_NAME" value="error"/>
+	<property name="ARES_ERROR_LOG_FULL_PATH" value="${LOG_HOME}/${ARES_ERROR_LOG_NAME}.log"/>
+	
+	<property name="queueSize" value="512" />
+	<!-- 异步日志提取调用者数据标识 true/false -->
+    <property name="includeCallerData" value="true" />
+
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="SERVICE_STD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${SERVICE_STD_FULL_PATH}</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 滚动日志文件保存格式 -->
+			<FileNamePattern>${LOG_HOME}/${SERVICE_STD_LOG}.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="APP_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${ARES_INFO_LOG_FULL_PATH}</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/${ARES_INFO_LOG_NAME}.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	
+	<appender name="APP_SERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${ARES_SERVER_LOG_FULL_PATH}</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/${ARES_SERVER_LOG_NAME}.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	
+
+	<appender name="APP_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${ARES_ERROR_LOG_FULL_PATH}</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/${ARES_ERROR_LOG_NAME}.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	
+	<appender name="FILE-INFO-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>${queueSize}</queueSize>
+        <includeCallerData>${includeCallerData}</includeCallerData>
+        <appender-ref ref="APP_INFO" />
+    </appender>
+    <appender name="FILE-SERVER-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>${queueSize}</queueSize>
+        <includeCallerData>${includeCallerData}</includeCallerData>
+        <appender-ref ref="APP_SERVER" />
+    </appender>
+	
+	<logger name="SERVER_LOGGER" level="INFO" additivity="false">
+		<appender-ref ref="FILE-SERVER-ASYNC"/>
+		<appender-ref ref="APP_ERROR"/>
+	</logger>
+	
+	<logger name="com.cy.ares" level="INFO" additivity="false">
+		<appender-ref ref="FILE-INFO-ASYNC"/>
+		<appender-ref ref="APP_ERROR"/>
+		<appender-ref ref="STDOUT"/>
+	</logger>
+
+<!--	<logger name="com.cy.ares.dao.mapper" level="DEBUG" additivity="false">-->
+<!--		<appender-ref ref="FILE-INFO-ASYNC"/>-->
+<!--		<appender-ref ref="APP_ERROR"/>-->
+<!--		<appender-ref ref="STDOUT"/>-->
+<!--	</logger>-->
+
+	<root level="INFO">
+		<appender-ref ref="SERVICE_STD"/>
+		<appender-ref ref="APP_ERROR"/>
+		<appender-ref ref="STDOUT"/>
+	</root>
+
+</configuration>

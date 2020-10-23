@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    config:
+      name: ares
+      profile: dev
+      backup:
+        localDev: true
+#      uri: http://10.20.1.233:9482

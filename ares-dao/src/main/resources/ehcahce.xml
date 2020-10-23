@@ -1,0 +1,27 @@
+<ehcache>
+
+    <cache name="NAMESPACE"
+        maxElementsInMemory="1000"
+        eternal="false"
+        timeToLiveSeconds="3600"
+        overflowToDisk="false"/>
+
+    <cache name="ENV"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false"/>
+
+    <cache name="APP"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false"/>
+
+    <cache name="APP_ENV"
+           maxElementsInMemory="30000"
+           eternal="false"
+           timeToLiveSeconds="3600"
+           overflowToDisk="false"/>
+
+</ehcache>

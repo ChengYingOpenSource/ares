@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ares.dao.core.dal.mapper.ext.Ares2ConfExtMapper">
+
+  <resultMap id="ConfDODOMap" type="com.cy.ares.dao.common.model.Ares2ConfDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="namespace_code" jdbcType="VARCHAR" property="namespaceCode" />
+    <result column="app_code" jdbcType="VARCHAR" property="appCode" />
+    <result column="env_code" jdbcType="VARCHAR" property="envCode" />
+    <result column="cluster_code" jdbcType="VARCHAR" property="clusterCode" />
+    <result column="group" jdbcType="VARCHAR" property="group" />
+    <result column="data_id" jdbcType="VARCHAR" property="dataId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="content_size" jdbcType="INTEGER" property="contentSize" />
+    <result column="content_type" jdbcType="VARCHAR" property="contentType" />
+    <result column="compress" jdbcType="TINYINT" property="compress" />
+    <result column="digest" jdbcType="VARCHAR" property="digest" />
+    <result column="encrypt" jdbcType="TINYINT" property="encrypt" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="trace_id" jdbcType="VARCHAR" property="traceId" />
+    <result column="rollback_from_huid" jdbcType="VARCHAR" property="rollbackFromHuid" />
+    <result column="create_user" jdbcType="BIGINT" property="createUser" />
+    <result column="modify_user" jdbcType="BIGINT" property="modifyUser" />
+    <result column="create_user_account" jdbcType="VARCHAR" property="createUserAccount" />
+    <result column="modify_user_account" jdbcType="VARCHAR" property="modifyUserAccount" />
+  </resultMap>
+
+  <sql id="base_column_list">
+    id, namespace_code, app_code, env_code, cluster_code, `group`, data_id, content, content_size, content_type, compress, digest,encrypt,`desc`,rollback_from_huid,trace_id,
+    gmt_create,gmt_modified,create_user,modify_user,create_user_account,modify_user_account
+  </sql>
+  <sql id="noid_column_list">
+    namespace_code, app_code, env_code, cluster_code, `group`, data_id, content, content_size, content_type, compress, digest,encrypt,`desc`,rollback_from_huid,trace_id,
+    gmt_create,gmt_modified,create_user,modify_user,create_user_account,modify_user_account
+  </sql>
+  <sql id="nocnt_column_list">
+    id,namespace_code, app_code, env_code, cluster_code, `group`, data_id,  content_size, content_type, compress, digest,encrypt,`desc`,rollback_from_huid,trace_id,
+    gmt_create,gmt_modified,create_user,modify_user,create_user_account,modify_user_account
+  </sql>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into ares2_conf
+    (
+    gmt_create,
+    gmt_modified,
+    namespace_code,
+    app_code,
+    env_code,
+    cluster_code,
+    `group`,
+    data_id,
+    content,
+    content_size,
+    content_type,
+    compress,
+    digest,
+    encrypt,
+    `desc`,
+    trace_id,
+    rollback_from_huid,
+    create_user,
+    modify_user,
+    create_user_account,
+    modify_user_account
+    ) values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      now(),
+      now(),
+      #{item.namespaceCode,jdbcType=VARCHAR},
+      #{item.appCode,jdbcType=VARCHAR},
+      #{item.envCode,jdbcType=VARCHAR},
+      #{item.clusterCode,jdbcType=VARCHAR},
+      #{item.group,jdbcType=VARCHAR},
+      #{item.dataId,jdbcType=VARCHAR},
+      #{item.content,jdbcType=VARCHAR},
+      #{item.contentSize,jdbcType=INTEGER},
+      #{item.contentType,jdbcType=VARCHAR},
+      #{item.compress,jdbcType=TINYINT},
+      #{item.digest,jdbcType=VARCHAR},
+      #{item.encrypt,jdbcType=TINYINT},
+      #{item.desc,jdbcType=VARCHAR},
+      #{item.traceId,jdbcType=VARCHAR},
+      #{item.rollbackFromHuid,jdbcType=VARCHAR},
+      #{item.createUser,jdbcType=BIGINT},
+      #{item.modifyUser,jdbcType=BIGINT},
+      #{item.createUserAccount,jdbcType=VARCHAR},
+      #{item.modifyUserAccount,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
+
+  <insert id="replaceConf" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+    REPLACE INTO ares2_conf(<include refid="noid_column_list"/>) VALUES
+    <foreach collection="list" item="it" separator=",">
+      ( #{it.namespaceCode},#{it.appCode},#{it.envCode},#{it.clusterCode},
+      #{it.group},#{it.dataId},#{it.content},
+      #{it.contentSize},#{it.contentType},#{it.compress},#{it.digest},#{it.encrypt},#{it.desc},
+      #{it.rollbackFromHuid},#{it.traceId},
+      #{it.gmtCreate},#{it.gmtModified},#{it.createUser},#{it.modifyUser},
+      #{it.createUserAccount},#{it.modifyUserAccount}
+      )
+    </foreach>
+  </insert>
+
+  <update id="updateContent" parameterType="com.cy.ares.dao.common.model.Ares2ConfDO">
+    update ares2_conf
+    set content = #{content},
+    content_size = #{contentSize},
+    content_type = #{contentType},
+    compress = #{compress},
+    encrypt = #{encrypt},
+    trace_id = #{traceId},
+    <if test="desc != null">
+      `desc` = #{desc},
+    </if>
+    gmt_modified = #{gmtModified},
+    <if test="modifyUserAccount != null"> `modify_user_account` = #{modifyUserAccount}, </if>
+    modify_user = #{modifyUser}
+
+    where namespace_code = #{namespaceCode} and app_code = #{appCode} and env_code = #{envCode}
+    and cluster_code = #{clusterCode} and `group` = #{group} and data_id = #{dataId}
+
+  </update>
+
+  <select id="findByKeyDataIds" resultMap="ConfDODOMap" parameterType="Map">
+    select * from ares2_conf
+    where namespace_code = #{path.namespaceCode} and app_code = #{path.appCode} and env_code = #{path.envCode}
+    and cluster_code = #{path.clusterCode}
+    <if test="path.group != null"> and `group` = #{path.group}</if>
+    and data_id in <foreach collection="list" close=")" open="(" separator="," item="item">#{item}</foreach>
+  </select>
+
+  <select id="findDataItemsWithSize" resultMap="ConfDODOMap">
+    select <include refid="nocnt_column_list"></include>,
+    case when content_size > 64 then null
+    else content
+    end as content
+    from ares2_conf
+    where namespace_code = #{namespaceCode} and app_code = #{appCode} and env_code = #{envCode} and cluster_code = #{clusterCode}
+    <if test="group != null"> and `group` = #{group}</if>
+    order by gmt_modified
+  </select>
+
+</mapper>

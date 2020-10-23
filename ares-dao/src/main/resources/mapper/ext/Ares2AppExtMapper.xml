@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ares.dao.core.dal.mapper.ext.Ares2AppExtMapper">
+
+  <delete id="deleteApp" parameterType="com.cy.ares.dao.common.model.Ares2AppDO">
+    delete  from ares2_app where namespace_code = #{namespaceCode} and app_code = #{appCode};
+    delete  from ares2_app_env where namespace_code = #{namespaceCode} and app_code = #{appCode};
+    delete  from ares2_cluster where namespace_code = #{namespaceCode} and app_code = #{appCode};
+    delete  from ares2_conf where namespace_code = #{namespaceCode} and app_code = #{appCode};
+    delete  from ares2_conf_group where namespace_code = #{namespaceCode} and app_code = #{appCode};
+    delete  from ares2_conf_history where namespace_code = #{namespaceCode} and app_code = #{appCode};
+  </delete>
+
+</mapper>

@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.201.46:3306/ares2?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: cy_ares
+    password: qXkxWtKSCrUM2CWI

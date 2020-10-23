@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ares.dao.core.dal.mapper.Ares2MockHttpMapper">
+
+    <resultMap id="BaseResultMap" type="com.cy.ares.dao.common.model.Ares2MockHttpDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="app_code" jdbcType="VARCHAR" property="appCode" />
+        <result column="method" jdbcType="VARCHAR" property="method" />
+        <result column="content_type" jdbcType="VARCHAR" property="contentType" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="script" jdbcType="VARCHAR" property="script" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="dataset" jdbcType="VARCHAR" property="dataset" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_user" jdbcType="BIGINT" property="createUser" />
+        <result column="modify_user" jdbcType="BIGINT" property="modifyUser" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Query_Where_Clause">
+        <where>
+            <foreach collection="query.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        `id`,`gmt_create`,`gmt_modified`,`app_code`,`method`,`content_type`,`url`,`script`,`type`,`dataset`,`remark`,`create_user`,`modify_user`
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.cy.ares.dao.common.query.Ares2MockHttpQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from ares2_mock_http
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ares2_mock_http where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ares2_mock_http where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByQuery" parameterType="com.cy.ares.dao.common.query.Ares2MockHttpQuery">
+        delete from ares2_mock_http
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.cy.ares.dao.common.model.Ares2MockHttpDO">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ares2_mock_http
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="appCode != null">
+                app_code,
+            </if>
+            <if test="method != null">
+                method,
+            </if>
+            <if test="contentType != null">
+                content_type,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="script != null">
+                script,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="dataset != null">
+                dataset,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="modifyUser != null">
+                modify_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="appCode != null">
+                #{appCode,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="contentType != null">
+                #{contentType,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="script != null">
+                #{script,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="dataset != null">
+                #{dataset,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=BIGINT},
+            </if>
+            <if test="modifyUser != null">
+                #{modifyUser,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.cy.ares.dao.common.query.Ares2MockHttpQuery" resultType="java.lang.Integer">
+        select count(*) from ares2_mock_http
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByQuerySelective" parameterType="map">
+        update ares2_mock_http
+        <set>
+            gmt_modified=now(),
+            <if test="record.appCode != null">
+                app_code = #{record.appCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.method != null">
+                method = #{record.method,jdbcType=VARCHAR},
+            </if>
+            <if test="record.contentType != null">
+                content_type = #{record.contentType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.script != null">
+                script = #{record.script,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dataset != null">
+                dataset = #{record.dataset,jdbcType=VARCHAR},
+            </if>
+            <if test="record.remark != null">
+                remark = #{record.remark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createUser != null">
+                create_user = #{record.createUser,jdbcType=BIGINT},
+            </if>
+            <if test="record.modifyUser != null">
+                modify_user = #{record.modifyUser,jdbcType=BIGINT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Query_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByQuery" parameterType="map">
+        update ares2_mock_http
+        <set>
+        app_code = #{record.appCode,jdbcType=VARCHAR},
+        method = #{record.method,jdbcType=VARCHAR},
+        content_type = #{record.contentType,jdbcType=VARCHAR},
+        url = #{record.url,jdbcType=VARCHAR},
+        script = #{record.script,jdbcType=VARCHAR},
+        type = #{record.type,jdbcType=VARCHAR},
+        dataset = #{record.dataset,jdbcType=VARCHAR},
+        remark = #{record.remark,jdbcType=VARCHAR},
+        create_user = #{record.createUser,jdbcType=BIGINT},
+        modify_user = #{record.modifyUser,jdbcType=BIGINT},
+        gmt_modified = now()
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Query_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.cy.ares.dao.common.model.Ares2MockHttpDO">
+        update ares2_mock_http
+        <set>
+            gmt_modified=now(),
+            <if test="appCode != null">
+                app_code = #{appCode,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                method = #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="contentType != null">
+                content_type = #{contentType,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="script != null">
+                script = #{script,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="dataset != null">
+                dataset = #{dataset,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=BIGINT},
+            </if>
+            <if test="modifyUser != null">
+                modify_user = #{modifyUser,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

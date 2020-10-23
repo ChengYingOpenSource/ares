@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ares.dao.core.dal.mapper.Ares2ConfLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.cy.ares.dao.common.model.Ares2ConfLogDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="trace_id" jdbcType="VARCHAR" property="traceId" />
+        <result column="instance_id" jdbcType="VARCHAR" property="instanceId" />
+        <result column="ip_addr" jdbcType="VARCHAR" property="ipAddr" />
+        <result column="hostname" jdbcType="VARCHAR" property="hostname" />
+        <result column="app_code" jdbcType="VARCHAR" property="appCode" />
+        <result column="data_id" jdbcType="VARCHAR" property="dataId" />
+        <result column="push_status" jdbcType="VARCHAR" property="pushStatus" />
+        <result column="push_info" jdbcType="VARCHAR" property="pushInfo" />
+        <result column="create_user" jdbcType="BIGINT" property="createUser" />
+        <result column="modify_user" jdbcType="BIGINT" property="modifyUser" />
+        <result column="create_user_account" jdbcType="VARCHAR" property="createUserAccount" />
+        <result column="modify_user_account" jdbcType="VARCHAR" property="modifyUserAccount" />
+    </resultMap>
+
+    <sql id="Query_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <foreach collection="criteria.criteria" item="criterion">
+                        <choose>
+                            <when test="criterion.noValue">
+                                and ${criterion.condition}
+                            </when>
+                            <when test="criterion.singleValue">
+                                and ${criterion.condition} #{criterion.value}
+                            </when>
+                            <when test="criterion.betweenValue">
+                                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            </when>
+                            <when test="criterion.listValue">
+                                and ${criterion.condition}
+                            <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                #{listItem}
+                            </foreach>
+                            </when>
+                        </choose>
+                    </foreach>
+                </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Query_Where_Clause">
+        <where>
+            <foreach collection="query.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        `id`,`gmt_create`,`gmt_modified`,`trace_id`,`instance_id`,`ip_addr`,`hostname`,`app_code`,`data_id`,`push_status`,`push_info`,`create_user`,`modify_user`,`create_user_account`,`modify_user_account`
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.cy.ares.dao.common.query.Ares2ConfLogQuery" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+            from ares2_conf_log
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="MysqlDialectSuffix" />
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from ares2_conf_log where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ares2_conf_log where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByQuery" parameterType="com.cy.ares.dao.common.query.Ares2ConfLogQuery">
+        delete from ares2_conf_log
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.cy.ares.dao.common.model.Ares2ConfLogDO">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ares2_conf_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            gmt_create,gmt_modified,
+            <if test="traceId != null">
+                trace_id,
+            </if>
+            <if test="instanceId != null">
+                instance_id,
+            </if>
+            <if test="ipAddr != null">
+                ip_addr,
+            </if>
+            <if test="hostname != null">
+                hostname,
+            </if>
+            <if test="appCode != null">
+                app_code,
+            </if>
+            <if test="dataId != null">
+                data_id,
+            </if>
+            <if test="pushStatus != null">
+                push_status,
+            </if>
+            <if test="pushInfo != null">
+                push_info,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="modifyUser != null">
+                modify_user,
+            </if>
+            <if test="createUserAccount != null">
+                create_user_account,
+            </if>
+            <if test="modifyUserAccount != null">
+                modify_user_account,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="traceId != null">
+                #{traceId,jdbcType=VARCHAR},
+            </if>
+            <if test="instanceId != null">
+                #{instanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="ipAddr != null">
+                #{ipAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="hostname != null">
+                #{hostname,jdbcType=VARCHAR},
+            </if>
+            <if test="appCode != null">
+                #{appCode,jdbcType=VARCHAR},
+            </if>
+            <if test="dataId != null">
+                #{dataId,jdbcType=VARCHAR},
+            </if>
+            <if test="pushStatus != null">
+                #{pushStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="pushInfo != null">
+                #{pushInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=BIGINT},
+            </if>
+            <if test="modifyUser != null">
+                #{modifyUser,jdbcType=BIGINT},
+            </if>
+            <if test="createUserAccount != null">
+                #{createUserAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyUserAccount != null">
+                #{modifyUserAccount,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByQuery" parameterType="com.cy.ares.dao.common.query.Ares2ConfLogQuery" resultType="java.lang.Integer">
+        select count(*) from ares2_conf_log
+        <if test="_parameter != null">
+            <include refid="Query_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByQuerySelective" parameterType="map">
+        update ares2_conf_log
+        <set>
+            gmt_modified=now(),
+            <if test="record.traceId != null">
+                trace_id = #{record.traceId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.instanceId != null">
+                instance_id = #{record.instanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.ipAddr != null">
+                ip_addr = #{record.ipAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="record.hostname != null">
+                hostname = #{record.hostname,jdbcType=VARCHAR},
+            </if>
+            <if test="record.appCode != null">
+                app_code = #{record.appCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dataId != null">
+                data_id = #{record.dataId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pushStatus != null">
+                push_status = #{record.pushStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pushInfo != null">
+                push_info = #{record.pushInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createUser != null">
+                create_user = #{record.createUser,jdbcType=BIGINT},
+            </if>
+            <if test="record.modifyUser != null">
+                modify_user = #{record.modifyUser,jdbcType=BIGINT},
+            </if>
+            <if test="record.createUserAccount != null">
+                create_user_account = #{record.createUserAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="record.modifyUserAccount != null">
+                modify_user_account = #{record.modifyUserAccount,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Query_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByQuery" parameterType="map">
+        update ares2_conf_log
+        <set>
+        trace_id = #{record.traceId,jdbcType=VARCHAR},
+        instance_id = #{record.instanceId,jdbcType=VARCHAR},
+        ip_addr = #{record.ipAddr,jdbcType=VARCHAR},
+        hostname = #{record.hostname,jdbcType=VARCHAR},
+        app_code = #{record.appCode,jdbcType=VARCHAR},
+        data_id = #{record.dataId,jdbcType=VARCHAR},
+        push_status = #{record.pushStatus,jdbcType=VARCHAR},
+        push_info = #{record.pushInfo,jdbcType=VARCHAR},
+        create_user = #{record.createUser,jdbcType=BIGINT},
+        modify_user = #{record.modifyUser,jdbcType=BIGINT},
+        create_user_account = #{record.createUserAccount,jdbcType=VARCHAR},
+        modify_user_account = #{record.modifyUserAccount,jdbcType=VARCHAR},
+        gmt_modified = now()
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Query_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.cy.ares.dao.common.model.Ares2ConfLogDO">
+        update ares2_conf_log
+        <set>
+            gmt_modified=now(),
+            <if test="traceId != null">
+                trace_id = #{traceId,jdbcType=VARCHAR},
+            </if>
+            <if test="instanceId != null">
+                instance_id = #{instanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="ipAddr != null">
+                ip_addr = #{ipAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="hostname != null">
+                hostname = #{hostname,jdbcType=VARCHAR},
+            </if>
+            <if test="appCode != null">
+                app_code = #{appCode,jdbcType=VARCHAR},
+            </if>
+            <if test="dataId != null">
+                data_id = #{dataId,jdbcType=VARCHAR},
+            </if>
+            <if test="pushStatus != null">
+                push_status = #{pushStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="pushInfo != null">
+                push_info = #{pushInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=BIGINT},
+            </if>
+            <if test="modifyUser != null">
+                modify_user = #{modifyUser,jdbcType=BIGINT},
+            </if>
+            <if test="createUserAccount != null">
+                create_user_account = #{createUserAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyUserAccount != null">
+                modify_user_account = #{modifyUserAccount,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="MysqlDialectSuffix">
+        <if test="pageOffset &gt;= 0 and pageSize &gt; 0">
+            <![CDATA[ LIMIT #{pageOffset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} ]]>
+        </if>
+    </sql>
+
+</mapper>

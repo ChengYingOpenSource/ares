@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ares.dao.core.dal.mapper.ext.Ares2EnvExtMapper">
+
+  <resultMap id="EnvDODOMap" type="com.cy.ares.dao.common.model.Ares2EnvDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="namespace_code" jdbcType="VARCHAR" property="namespaceCode" />
+    <result column="env_name" jdbcType="VARCHAR" property="envName" />
+    <result column="env_code" jdbcType="VARCHAR" property="envCode" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="create_user" jdbcType="BIGINT" property="createUser" />
+    <result column="modify_user" jdbcType="BIGINT" property="modifyUser" />
+    <result column="create_user_account" jdbcType="VARCHAR" property="createUserAccount" />
+    <result column="modify_user_account" jdbcType="VARCHAR" property="modifyUserAccount" />
+  </resultMap>
+
+  <delete id="deleteEnv" parameterType="Map">
+    delete  from ares2_env where namespace_code = #{namespaceCode} and env_code = #{envCode};
+    delete  from ares2_app_env where namespace_code = #{namespaceCode} and env_code = #{envCode};
+    delete  from ares2_cluster where namespace_code = #{namespaceCode} and env_code = #{envCode};
+    delete  from ares2_conf where namespace_code = #{namespaceCode} and env_code = #{envCode};
+    delete  from ares2_conf_group where namespace_code = #{namespaceCode} and env_code = #{envCode};
+    delete  from ares2_conf_history where namespace_code = #{namespaceCode} and env_code = #{envCode};
+  </delete>
+
+  <select id="listUnderApp" resultMap="EnvDODOMap">
+    select a.* from ares2_env a,ares2_app_env b where a.namespace_code = #{namespaceCode}
+    and a.namespace_code = b.namespace_code and a.env_code = b.env_code and b.app_code = #{appCode}
+    order by a.type
+  </select>
+</mapper>

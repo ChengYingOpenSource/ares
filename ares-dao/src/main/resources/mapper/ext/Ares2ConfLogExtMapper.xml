@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ares.dao.core.dal.mapper.ext.Ares2ConfLogExtMapper">
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into ares2_conf_history
+    (
+    gmt_create,
+    gmt_modified,
+    trace_id,
+    instance_id,
+    ip_addr,
+    hostname,
+    app_code,
+    data_id,
+    push_status,
+    push_info,
+    create_user,
+    modify_user,
+    create_user_account,
+    modify_user_account
+    ) values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      now(),
+      now(),
+        #{item.traceId,jdbcType=VARCHAR},
+        #{item.instanceId,jdbcType=VARCHAR},
+        #{item.ipAddr,jdbcType=VARCHAR},
+        #{item.hostname,jdbcType=VARCHAR},
+        #{item.appCode,jdbcType=VARCHAR},
+        #{item.dataId,jdbcType=VARCHAR},
+        #{item.pushStatus,jdbcType=VARCHAR},
+        #{item.pushInfo,jdbcType=VARCHAR},
+        #{item.createUser,jdbcType=BIGINT},
+        #{item.modifyUser,jdbcType=BIGINT},
+        #{item.createUserAccount,jdbcType=VARCHAR},
+        #{item.modifyUserAccount,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
+</mapper>

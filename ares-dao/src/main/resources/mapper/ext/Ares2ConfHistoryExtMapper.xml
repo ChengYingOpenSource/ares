@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ares.dao.core.dal.mapper.ext.Ares2ConfHistoryExtMapper">
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into ares2_conf_history
+    (
+    gmt_create,
+    gmt_modified,
+    conf_history_uid,
+    operation_type,
+    namespace_code,
+    app_code,
+    env_code,
+    cluster_code,
+    `group`,
+    data_id,
+    content,
+    content_size,
+    content_type,
+    compress,
+    digest,
+    encrypt,
+    `desc`,
+    rollback_from_huid,
+    create_user,
+    modify_user,
+    create_user_account,
+    modify_user_account
+    ) values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      now(),
+      now(),
+        #{item.confHistoryUid,jdbcType=VARCHAR},
+        #{item.operationType,jdbcType=VARCHAR},
+        #{item.namespaceCode,jdbcType=VARCHAR},
+        #{item.appCode,jdbcType=VARCHAR},
+        #{item.envCode,jdbcType=VARCHAR},
+        #{item.clusterCode,jdbcType=VARCHAR},
+        #{item.group,jdbcType=VARCHAR},
+        #{item.dataId,jdbcType=VARCHAR},
+        #{item.content,jdbcType=VARCHAR},
+        #{item.contentSize,jdbcType=INTEGER},
+        #{item.contentType,jdbcType=VARCHAR},
+        #{item.compress,jdbcType=TINYINT},
+        #{item.digest,jdbcType=VARCHAR},
+        #{item.encrypt,jdbcType=TINYINT},
+        #{item.desc,jdbcType=VARCHAR},
+        #{item.rollbackFromHuid,jdbcType=VARCHAR},
+        #{item.createUser,jdbcType=BIGINT},
+        #{item.modifyUser,jdbcType=BIGINT},
+        #{item.createUserAccount,jdbcType=VARCHAR},
+        #{item.modifyUserAccount,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
+</mapper>
